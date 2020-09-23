@@ -1,0 +1,43 @@
+﻿@model IncidentTracking.Models.ManufacturingArea
+@*
+    * ================================================================================
+    * MODULE:  ManufacturingAreas\Create.cshtml
+    *
+    * PURPOSE:
+    * This view supports adding new manufacturing areas.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-10-18
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author          Date        Description
+    * Brad Robbins	  2018-10-30  Initial version
+    * Brad Robbins    2019-05-24  Added ReportLabel
+    * Brad Robbins    2019-09-24  Added SME and Mgr fields
+    * Brad Robbins    2020-04-29  Revised to use partial view
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Add Manufacturing Area</h2>
+<p class="alert-danger">@TempData["Error"]</p>
+
+<hr />
+<form asp-action="Create" autocomplete="off">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @{ await Html.RenderPartialAsync("AddEditPartialView"); }
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

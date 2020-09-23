@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="MESIncidentTracking">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Server=PWKANSQL001;Database=MES_IncidentTrack;User Id=AUTO_IncidentTrack;Password=Inc1d3ntTr4cking~;MultipleActiveResultSets=true</ConnectString>
+  </ConnectionProperties>
+  <DataSourceID>6dddc5bc-9aeb-4d33-8a2c-18016d615d9f</DataSourceID>
+</RptDataSource>

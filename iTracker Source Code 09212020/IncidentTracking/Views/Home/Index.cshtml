@@ -1,0 +1,115 @@
+﻿@model IEnumerable<IncidentTracking.Data.Incident>
+@*
+    * ================================================================================
+    * MODULE:  Home\Index.cshtml
+    *
+    * PURPOSE:
+    * This is the home page.
+    *
+    * Copyright:    ©2019 by E2i, Inc.
+    * Created Date: 2019-05-28
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author            Date        Description
+    * Brad Robbins	    2019-05-28  Initial version
+    * Brad Robbins      2019-06-27  Report buttons to point to new Tier3 and Tier3H reports
+    * Brad Robbins      2019-07-02  Added Estimated Downtime to incident list
+    * Brad Robbins      2020-03-16  Updated to Tier4 reports
+    * Brad Robbins      2020-05-13  Added short description to table
+    * Brad Robbins      2020-06-02  Removed "root cause" in favor of classification
+    * ================================================================================
+*@
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style type="text/css">
+    #main {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="jumbotron">
+    <h1>Incident Tracking</h1>
+    <p>Welcome to the Engineering Department Incident Tracking system.</p>
+    <p>Please select one of the incident types below to begin.</p>
+</div>
+
+<!--buttons to other sites-->
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-5">
+        <a href="../AutoIncidentTracking/" class="btn btn-lg btn-default btn-block">PCS Incident Tracking</a>
+    </div>
+    <div class="col-sm-5">
+        <a href="../MESIncidentTracking/" class="btn btn-lg btn-default btn-block">MES Incident Tracking</a>
+    </div>
+    <div class="col-sm-1"></div>
+</div>
+<br/>
+
+<!--buttons to other sites-->
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-5">
+        <a href="http://pwkansql001/Reports/report/IncidentTrackingReports/Tier4" class="btn btn-lg btn-primary btn-block">Tier 4 Report</a>
+    </div>
+    <div class="col-sm-5">
+        <a href="http://pwkansql001/Reports/report/IncidentTrackingReports/Tier4H" class="btn btn-lg btn-default btn-block">Tier 4 Historical Report</a>
+    </div>
+    <div class="col-sm-1"></div>
+</div>
+
+<hr/>
+<h3>Latest Incidents</h3>
+<table class="table table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>DateTime</th>
+            <th>Area</th>
+            <th>Classification</th>
+            <th>Engineer</th>
+            <th>Short Description</th>
+            <th class="text-right">Est. Downtime (h)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var server = (item.Type == "PCS" ? @"../AutoIncidentTracking/" : @"../MESIncidentTracking/");
+            var link = $@"{server}Incidents/Details/{item.IncidentId}";
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FormattedActivityPerformedDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Area)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Classification)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EngineerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortDescription)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.EstimatedDowntime)
+                </td>
+                <td>
+                    <a href="@link">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

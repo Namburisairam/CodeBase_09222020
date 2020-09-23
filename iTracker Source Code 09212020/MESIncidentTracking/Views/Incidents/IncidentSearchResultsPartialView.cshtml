@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ES13Web.Models.IncidentSearchResultViewModel>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@*
+    * ================================================================================
+    * MODULE:  Incidents\IncidentSearchResultsPartialView.cshtml
+    *
+    * PURPOSE:
+    * This partial view provides a tabular listing of incident search results.
+    *
+    * Copyright:    ©2019 by E2i, Inc.
+    * Created Date: 2019-04-26
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2019-04-26  Initial version
+    * Brad Robbins     2019-10-04  Added support for batch number
+    * Brad Robbins     2019-12-06  Added conditions for edit link
+    * Brad Robbins     2020-05-13  Added short description
+    * Brad Robbins     2020-06-02  Removed "root cause" in favor of classification
+    * ================================================================================
+*@
+
+@{ var currentUserId = User.Identity.Name; }
+<table class="table table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>Activity Performed</th>
+            <th>Mfg Area</th>
+            <th>Classification</th>
+            <th>Engineer Name</th>
+            <th>Short Description</th>
+            <th>Werum Ticket</th>
+            <th>BT Service Request</th>
+            <th>Batch Number</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FormattedLocalActivityPerformedDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManufacturingAreaName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClassificationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EngineerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WerumTicket)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BTServiceRequestNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BatchNumber)
+                </td>
+                <td>
+                    @if(currentUserId.Equals(item.UserId, StringComparison.CurrentCultureIgnoreCase) || (await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.IncidentId">Edit</a> 
+                        <span>|</span>
+                    } 
+                    <a asp-action="Details" asp-route-id="@item.IncidentId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

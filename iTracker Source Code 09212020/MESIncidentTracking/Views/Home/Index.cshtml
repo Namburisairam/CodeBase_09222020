@@ -1,0 +1,138 @@
+﻿
+@*
+    * ================================================================================
+    * MODULE:  Home\Index.cshtml
+    *
+    * PURPOSE:
+    * This view represents the front page of the wesite.
+    *
+    * Copyright:    ©2019 by E2i, Inc.
+    * Created Date: 2019-04-26
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2019-04-26  Initial version
+    * Brad Robbins     2019-06-27  Removed reports from config in favor of direct links
+    * Brad Robbins     2019-09-30  Renamed "ES13%" to "Intervention %" in shift table
+    * Brad Robbins     2020-03-16  Updated to Tier3 reports
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Home Page";
+}
+@{ var incidents = ViewData["IncidentsLast30Days"]; }
+@{ var downtime = ViewData["DowntimeLast30Days"]; }
+@{ var maxIncidents = ViewData["MostIncidentsLast30Days"]; }
+@{ var incidentsByShift = ViewData["IncidentsByShift"] as List<HomeIncidentCountViewModel>; }
+@{ var percentInterventionsByShift = ViewData["PercentInterventionsByShift"] as List<HomeES13PercentViewModel>; }
+@{ var incidentsByDay = ViewData["IncidentsByDay"]; }
+
+<style type="text/css">
+    .carousel-caption { top: 0; bottom: auto; }
+    .carousel-indicators { top: auto; bottom: 5%; }
+    .white { color: white; }
+    .black { color: black; }
+</style>
+
+<div id="myCarousel" class="carousel slide hidden-xs hidden-sm" data-ride="carousel" data-interval="8000">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <img src="~/images/banner1.svg" alt="Reported Incidents" class="img-responsive" />
+            <div class="carousel-caption" role="option">
+                <a class="btn" href="#">
+                    <h1 class="black">Incidents (30d): <strong>@incidents</strong></h1>
+                </a>
+            </div>
+        </div>
+        <div class="item">
+            <img src="~/images/banner2.svg" alt="Downtime" class="img-responsive" />
+            <div class="carousel-caption" role="option">
+                <a class="btn" href="#">
+                    <h1 class="white">Average Downtime (30d): <strong>@downtime <text>&nbsp;hrs</text></strong></h1>
+                </a>
+            </div>
+        </div>
+        <div class="item">
+            <img src="~/images/banner3.svg" alt="Microsoft Azure" class="img-responsive" />
+            <div class="carousel-caption" role="option">
+                <a class="btn" href="#">
+                    <h1 class="white">Most Incidents (30d): <strong>@maxIncidents</strong></h1>
+                </a>
+            </div>
+        </div>
+    </div>
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-sm-4 col-md-3">
+        <h2 class="text-center">Incidents</h2>
+        <a class="btn btn-lg btn-primary btn-block" asp-controller="Incidents" asp-action="Create">Create an Incident</a>
+        <a class="btn btn-lg btn-default btn-block" asp-controller="Incidents" asp-action="Index">View Incident Log</a>
+        <a class="btn btn-lg btn-default btn-block" asp-controller="Incidents" asp-action="Search">Search Incident Log</a>
+    </div>
+    <div class="col-sm-5 col-md-4">
+        <h2 class="text-center">Reports</h2>
+        
+        <a class="btn btn-lg btn-primary btn-block" href="http://pwkansql001/Reports/report/IncidentTrackingReports/Tier3?type=MES">Tier 3 Report</a>
+        <a class="btn btn-lg btn-default btn-block" href="http://pwkansql001/Reports/report/IncidentTrackingReports/Tier3H?type=MES">Tier 3 Historical Report</a>
+        <a class="btn btn-lg btn-default btn-block" href="http://pwkansql001/Reports/report/IncidentTrackingReports/MES-UnresolvedIncidents">Unresolved Incidents Report</a>
+        <a class="btn btn-lg btn-default btn-block" href="http://pwkansql001/Reports/report/IncidentTrackingReports/MES-UnresolvedWerumIncidents">Unresolved Werum Tickets Report</a>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-sm-4 col-md-3">
+        <br />
+        <h4>Incidents By Shift (30d)</h4>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th class="text-right">1st</th>
+                    <th class="text-right">2nd</th>
+                    <th class="text-right">3rd</th>
+                    <th class="text-right">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in incidentsByShift)
+                {
+                    <tr>
+                        <td>@i.Type</td>
+                        <td class="text-right">@i.First</td>
+                        <td class="text-right">@i.Second</td>
+                        <td class="text-right">@i.Third</td>
+                        <td class="text-right">@i.Total</td>
+                    </tr>
+                }
+            
+                @foreach (var i in percentInterventionsByShift)
+                {
+                    <tr>
+                        <td>Intervention %</td>
+                        <td class="text-right">@i.First%</td>
+                        <td class="text-right">@i.Second%</td>
+                        <td class="text-right">@i.Third%</td>
+                        <td class="text-right">@i.Total%</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+        <h4>Average Downtime (30d)</h4>
+        <p>@downtime&nbsp;hrs</p>
+    </div>
+</div>

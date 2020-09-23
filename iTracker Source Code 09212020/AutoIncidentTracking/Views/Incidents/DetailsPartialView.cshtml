@@ -1,0 +1,286 @@
+﻿@model IncidentTracking.Models.Incident
+@*
+    * ================================================================================
+    * MODULE:  Incidents\DetailsPartialView.cshtml
+    *
+    * PURPOSE:
+    * This view renders the incident details.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-11-12
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2018-11-12  Initial version
+    * Brad Robbins     2020-04-02  Removed software revision field
+    * Brad Robbins     2020-05-13  Added short description field
+    * Brad Robbins     2020-06-02  Removed "root cause" in favor of classification
+    * ================================================================================
+*@
+
+<h2>Incident Details</h2>
+
+<hr />
+
+<style>
+    table {
+        border: none;
+        border-collapse: collapse;
+    }
+
+    th {
+        font-weight: bold;
+        text-align: right;
+        border: none;
+        padding-right: 10px;
+    }
+
+    td { 
+        border: none; 
+
+    }
+
+</style>
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LocalCreatedDateTime):
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.LocalCreatedDateTime)
+        </td>
+    </tr>
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.LastModifiedDateTime):
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.LocalLastModifiedDateTime)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EngineerName):
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.EngineerName)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ShortDescription):
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.ShortDescription)
+        </td>
+    </tr>
+    <tr>
+
+        <th>Manufacturing Area:</th>
+        <td>
+            @Html.DisplayFor(model => model.ManufacturingArea.Name)
+        </td>
+    </tr>
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ControlSystem.ControlSystemDescription):
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.ControlSystem.ControlSystemDescription)
+        </td>
+    </tr>
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.AreaContact):
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.AreaContact)
+        </td>
+    </tr>
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.EstimatedDownTimeHours):
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.EstimatedDownTimeHours)
+        </td>
+    </tr>
+    <tr>
+
+        <th>Classification:</th>
+        <td>
+            @Html.DisplayFor(model => model.Classification.Name)
+        </td>
+    </tr>
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Resolved):
+        </th>
+        <td>
+            @(Model.Resolved.HasValue && Model.Resolved.Value ? "Yes" : "No")
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.HandoffWork):
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.HandoffWork)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RequireES11):
+        </th>
+        <td>
+            @(Model.RequireES11.HasValue && Model.RequireES11.Value ? "Yes" : "No")
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IncidentDescription):
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.IncidentDescription)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ActionSummary):
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.ActionSummary)
+        </td>
+    </tr>
+
+    @if (Model.RequireES11.HasValue && Model.RequireES11.Value)
+    {
+        <tr>
+            <th>Log Number:</th>
+            <td>
+                @Html.DisplayFor(model => model.LogNumber)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityTypeId):
+            </th>
+            <td>
+                @Html.Label("ActivityType.Description", Model.ActivityType == null ? "N/A" : Model.ActivityType.Description)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImpactSafety):
+            </th>
+            <td>
+                @(Model.ImpactSafety.HasValue && Model.ImpactSafety.Value ? "Yes" : "No")
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImpactQuality):
+            </th>
+            <td>
+                @(Model.ImpactQuality.HasValue && Model.ImpactQuality.Value ? "Yes" : "No")
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImpactValidation):
+            </th>
+            <td>
+                @(Model.ImpactValidation.HasValue && Model.ImpactValidation.Value ? "Yes" : "No")
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RequirePreApproval):
+            </th>
+            <td>
+                @(Model.RequirePreApproval.HasValue && Model.RequirePreApproval.Value ? "Yes" : "No")
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RequireManagerApproval):
+            </th>
+            <td>
+                @(Model.RequireManagerApproval.HasValue && Model.RequireManagerApproval.Value ? "Yes" : "No")
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RequireTagOut):
+            </th>
+            <td>
+                @(Model.RequireTagOut.HasValue && Model.RequireTagOut.Value ? "Yes" : "No")
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PRNumber):
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.PRNumber)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TagOutNumber):
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.TagOutNumber)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemSpecifications):
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.SystemSpecifications)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Drawings):
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Drawings)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LotNumber):
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.LotNumber)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProgramComparisonMade):
+            </th>
+            <td>
+                @(Model.ProgramComparisonMade.HasValue && Model.ProgramComparisonMade.Value ? "Yes" : "No")
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityComplete):
+            </th>
+            <td>
+                @(Model.ActivityComplete.HasValue && Model.ActivityComplete.Value ? "Yes" : "No")
+            </td>
+        </tr>    
+     }
+
+</table>

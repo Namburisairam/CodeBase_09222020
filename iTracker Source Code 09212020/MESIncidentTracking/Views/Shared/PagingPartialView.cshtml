@@ -1,0 +1,41 @@
+﻿@*
+    * ================================================================================
+    * MODULE:  Shared\PagingPartialView.cshtml
+    *
+    * PURPOSE:
+    * This partial view supports paging buttons for index pages.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-11-02
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * See also: https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2018-11-02  Initial version
+    * ================================================================================
+*@
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+@if (Model.HasPreviousPage || Model.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+}

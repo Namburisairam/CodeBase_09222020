@@ -1,0 +1,114 @@
+﻿@model IncidentTracking.Models.ControlSystem
+@*
+    * ================================================================================
+    * MODULE:  ControlSystems\Details.cshtml
+    *
+    * PURPOSE:
+    * This view supports control systems details.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-11-01
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2018-11-01  Initial version
+    * Brad Robbins     2020-04-10  Added IsObsolete field
+    * Brad Robbins     2020-04-29  Added link to manufacturing area for convenience
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Control System Details</h2>
+<hr />
+
+<div>
+    
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PlcId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PlcId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PhysicalLocation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhysicalLocation)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsNetworked)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsNetworked)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IpAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IpAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GdrsLocation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GdrsLocation)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Make)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Make)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Firmware)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Firmware)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsInAutosave)
+        </dt>
+        <dd>
+            @Html.CheckBox("IsInAutosave", Model.IsInAutosave ?? false, new { @disabled = "disabled" })
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsObsolete)
+        </dt>
+        <dd>
+            @Html.CheckBox("IsObsolete", Model.IsObsolete ?? false, new { @disabled = "disabled" })
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ManufacturingAreaId)
+        </dt>
+        <dd>
+            <a asp-action="Details" asp-controller="ManufacturingAreas" asp-route-id="@Model.ManufacturingArea.ManufacturingAreaId">@Model.ManufacturingArea.Name</a>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ControlSystemId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,49 @@
+@model IncidentTracking.Models.T3Group
+@*
+    * ================================================================================
+    * MODULE:  T3Groups\AddEditPartialView.cshtml
+    *
+    * PURPOSE:
+    * This view supports adding/editing Tier 3 groups.
+    *
+    * Copyright:    ©2020 by E2i, Inc.
+    * Created Date: 2020-04-29
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2020-04-29  Initial version
+    * ================================================================================
+*@
+
+<div class="row">
+    <div class="col-md-4">
+    
+        <div class="form-group">
+            <label asp-for="T3GroupId" class="control-label"></label>
+            <input asp-for="T3GroupId" class="form-control" placeholder="Required unique group number" />
+            <span asp-validation-for="T3GroupId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="Required unique group name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SmeName" class="control-label"></label>
+            <input asp-for="SmeName" class="form-control" placeholder="SME name" />
+            <span asp-validation-for="SmeName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SmeEmailAddress" class="control-label"></label>
+            <input asp-for="SmeEmailAddress" class="form-control" placeholder="SME email address" />
+            <span asp-validation-for="SmeEmailAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ReplyToEmailAddress" class="control-label"></label>
+            <input asp-for="ReplyToEmailAddress" class="form-control" placeholder="ReplyTo email address" />
+            <span asp-validation-for="ReplyToEmailAddress" class="text-danger"></span>
+        </div>
+    </div>
+</div>

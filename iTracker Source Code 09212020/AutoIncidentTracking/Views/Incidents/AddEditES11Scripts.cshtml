@@ -1,0 +1,60 @@
+﻿@*
+ * ================================================================================
+ * MODULE:  Incidents\AddEditES11Scripts.cs
+ *
+ * PURPOSE:
+ * This partial view adds javascript that is necessary for cascading dropdown lists.
+ *
+ * Copyright:    ©2018 by E2i, Inc.
+ * Created Date: 2018-10-18
+ * Author:       Brad Robbins (brobbins@e2i.net)
+ *
+ * --------------------------------------------------------------------------------
+ * Revision History:
+ * Author           Date        Description
+ * Brad Robbins	    2018-10-18  Initial version
+ * Brad Robbins     2020-03-23  Updated setConditionalControls function
+ * Brad Robbins     2020-05-12  Removed ImpactQuality check for "M"
+ * ================================================================================
+*@
+<script type="text/javascript">
+    //helper function to show/hide conditional controls.
+    function setConditionalControls() {
+        var selectedActivityType = $('#ActivityTypeId').val();
+
+        console.log(selectedActivityType);
+        if (selectedActivityType === 'T' ||
+            selectedActivityType === 'L' ||
+            selectedActivityType === 'M') {
+            console.log('pre-approval required');
+            $('#RequirePreApproval').prop('checked', true);
+            $('#RequireManagerApproval').prop('checked', true);
+        }
+
+        if (selectedActivityType === 'T') {
+            $('#ImpactQuality').prop('checked', true);
+        }
+
+        if (selectedActivityType === 'S') {
+            if ($('#ImpactSafety').is(':checked') || $('#ImpactQuality').is(':checked') || $('#ImpactValidation').is(':checked')) {
+                console.log('pre-approval required by activity');
+                $('#RequirePreApproval').prop('checked', true);
+            }
+        }
+    }
+       
+    //initially hide certain options
+    $().ready(function () {
+        $('#impacts').hide();
+        $('#requirements').hide();
+        $('#pre-approvals').hide();
+        setConditionalControls();
+    });
+    
+    $('#ActivityTypeId').change(function () {
+        setConditionalControls();
+        $('#impacts').show();
+        $('#requirements').show();
+        $('#pre-approvals').show();
+    });
+</script>

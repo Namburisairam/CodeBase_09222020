@@ -1,0 +1,298 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@model IncidentTracking.Models.Incident
+@*
+    * ================================================================================
+    * MODULE:  Incidents\Details.cshtml
+    *
+    * PURPOSE:
+    * This view supports incident details.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-10-18
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author            Date        Description
+    * Brad Robbins	    2018-10-29  Initial version
+    * Brad Robbins      2019-05-01  Added BT service request fields
+    * Brad Robbins	    2019-08-09  Expanded email body
+    * Brad Robbins      2019-08-29  Added engineering time
+    * Brad Robbins      2019-09-23  Added incident URL to email body
+    * Brad Robbins      2019-10-11  Updated email text to handle long summaries
+    * Brad Robbins      2020-03-11  Enabled ES11
+    * Brad Robbins      2020-03-18  Added escalation
+    * Brad Robbins      2020-04-02  Removed software revision field
+    * Brad Robbins      2020-05-13  Added short description
+    * Brad Robbins      2020-06-02  Removed "root cause" in favor of classification
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Details";
+}
+
+@{ 
+    var incDesc = Model.IncidentDescription.Length > 350 ?
+        Model.IncidentDescription.Substring(0, 346) + "..." :
+        Model.IncidentDescription;
+    var actSumm = Model.ActionSummary.Length > 350 ?
+        Model.ActionSummary.Substring(0, 346) + "..." :
+        Model.ActionSummary;
+    var link = "Incident URL: http://" + Context.Request.Host + Context.Request.PathBase + Context.Request.Path;
+
+    var desc = "Incident ID: " + Model.IncidentId + Environment.NewLine +
+               "Short Description: " + Model.ShortDescription + Environment.NewLine +
+               "Engineer Name: " + Model.EngineerName + Environment.NewLine +
+               "Area Contact: " + Model.AreaContact + Environment.NewLine +
+               String.Format("Est. Downtime (h): {0:0.00}", Model.EstimatedDownTimeHours) + Environment.NewLine +
+               "Classification: " + Model.Classification.Name + Environment.NewLine +
+               "Incident Description: " + incDesc + Environment.NewLine +
+               "Action Summary: " + actSumm + Environment.NewLine + Environment.NewLine +
+               link;
+    var log = "Log Number: " + Model.LogNumber + Environment.NewLine;
+    var body = ((Model.LogNumber != "N/A") ? log + Environment.NewLine + desc : desc);
+    var emailBody = System.Uri.EscapeDataString(body);
+}
+
+<h2>Incident Details</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-8 col-lg-8">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.IncidentId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IncidentId)
+            </dd>
+            <dt>Created</dt>
+            <dd>
+                @Html.DisplayFor(model => model.FormattedLocalCreatedDateTime)
+            </dd>
+            <dt>Last Modified</dt>
+            <dd>
+                @Html.DisplayFor(model => model.FormattedLocalLastModifiedDateTime)
+            </dd>
+            <dt>Activity Performed</dt>
+            <dd>
+                @Html.DisplayFor(model => model.FormattedLocalActivityPerformedDateTime)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EngineerName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EngineerName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ShortDescription)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ShortDescription)
+            </dd>
+            <dt>Manufacturing Area</dt>
+            <dd>
+                @Html.DisplayFor(model => model.ManufacturingArea.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ControlSystem.ControlSystemDescription)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ControlSystem.ControlSystemDescription)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.AreaContact)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AreaContact)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EstimatedDownTimeHours)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EstimatedDownTimeHours)
+            </dd>
+            <dt>Engn. Time (hours)</dt>
+            <dd>
+                @Html.DisplayFor(model => model.EngineeringTimeHours)
+            </dd>
+            <dt>Classification</dt>
+            <dd>
+                @Html.DisplayFor(model => model.Classification.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Resolved)
+            </dt>
+            <dd>
+                @Html.CheckBox("Resolved", Model.Resolved ?? false, new { @disabled = "disabled" })
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.HandoffWork)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HandoffWork)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.RequireES11)
+            </dt>
+            <dd>
+                @Html.CheckBox("RequireES11", Model.RequireES11 ?? false, new { @disabled = "disabled" })
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IncidentDescription)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IncidentDescription)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ActionSummary)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ActionSummary)
+            </dd>
+            <dt>BT Service Request</dt>
+            <dd>
+                @Html.DisplayFor(model => model.BTServiceRequestNumber)
+            </dd>
+            <dt>BT Service Summary</dt>
+            <dd>
+                @Html.DisplayFor(model => model.BTServiceRequestSummary)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Escalation)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Escalation)
+            </dd>
+        </dl>
+    </div>
+    @if (Model.RequireES11.HasValue && Model.RequireES11.Value)
+    {
+        <div class="col-md-4 col-lg-4">
+            <dl class="dl-horizontal">
+                <dt>Log Number</dt>
+                <dd>
+                    @Html.DisplayFor(model => model.LogNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ActivityTypeId)
+                </dt>
+                <dd>
+                    @Html.Label("ActivityType.Description", Model.ActivityType == null ? "-" : Model.ActivityType.Description)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ImpactSafety)
+                </dt>
+                <dd>
+                    @Html.CheckBox("ImpactSafety", Model.ImpactSafety ?? false, new { @disabled = "disabled" })
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ImpactQuality)
+                </dt>
+                <dd>
+                    @Html.CheckBox("ImpactQuality", Model.ImpactQuality ?? false, new { @disabled = "disabled" })
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ImpactValidation)
+                </dt>
+                <dd>
+                    @Html.CheckBox("ImpactValidation", Model.ImpactValidation ?? false, new { @disabled = "disabled" })
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RequirePreApproval)
+                </dt>
+                <dd>
+                    @Html.CheckBox("RequirePreApproval", Model.RequirePreApproval ?? false, new { @disabled = "disabled" })
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RequireManagerApproval)
+                </dt>
+                <dd>
+                    @Html.CheckBox("RequireManagerApproval", Model.RequireManagerApproval ?? false, new { @disabled = "disabled" })
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RequireTagOut)
+                </dt>
+                <dd>
+                    @Html.CheckBox("RequireTagOut", Model.RequireTagOut ?? false, new { @disabled = "disabled" })
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.PRNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.PRNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.TagOutNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TagOutNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.SystemSpecifications)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.SystemSpecifications)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Drawings)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Drawings)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.LotNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.LotNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ProgramComparisonMade)
+                </dt>
+                <dd>
+                    @Html.CheckBox("ProgramComparisonMade", Model.ProgramComparisonMade ?? false, new { @disabled = "disabled" })
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ActivityComplete)
+                </dt>
+                <dd>
+                    @Html.CheckBox("ActivityComplete", Model.ActivityComplete ?? false, new { @disabled = "disabled" })
+                </dd>
+            </dl>
+
+        </div>
+    }
+</div>
+
+<div>
+    @if(User.Identity.Name.Equals(Model.UserId, StringComparison.CurrentCultureIgnoreCase) || (await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.IncidentId">Edit</a> 
+        <span>|</span>
+    }
+    @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+    {
+        <a asp-action="Delete" asp-route-id="@Model.IncidentId">Delete</a>
+        <span>|</span>
+    }
+    <a id="duplicate" asp-action="Duplicate" asp-route-id="@Model.IncidentId">Duplicate</a> |
+    <a href="mailto:?subject=Incident%20Report&body=@emailBody">Email Incident</a>  |
+    @if (Model.RequireES11.HasValue && Model.RequireES11.Value)
+    {
+        <a asp-action="GetDocument" asp-route-id="@Model.IncidentId">Form</a>
+        <span> | </span>
+    }
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script type="text/javascript">
+
+    $("#duplicate").click(function () {
+        var dt = new Date().toISOString();
+
+        var ref = $(this).attr("href");
+        $(this).attr("href", ref + "?date=" + dt);
+    });
+</script>

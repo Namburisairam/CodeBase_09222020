@@ -1,0 +1,52 @@
+﻿@model ES13Web.Models.Incident
+@*
+    * ================================================================================
+    * MODULE:  ManufacturingAreas\Delete.cshtml
+    *
+    * PURPOSE:
+    * This view supports deleting manufacturing areas.
+    *
+    * Copyright:    ©2019 by E2i, Inc.
+    * Created Date: 2019-04-26
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2019-04-26  Initial version
+    * Brad Robbins     2020-05-13  Added short description
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete Incident</h2>
+
+<h4>Are you sure you want to delete this incident?</h4>
+<hr/>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>Created Date/Time</dt>
+        <dd>
+            @Html.DisplayFor(model => model.FormattedLocalCreatedDateTime)
+        </dd>
+
+        <dt>Area Name</dt>
+        <dd>
+            @Html.DisplayFor(model => model.ManufacturingArea.Name)
+        </dd>
+
+        <dt>Short Description</dt>
+        <dd>
+            @Html.DisplayFor(model => model.ShortDescription)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IncidentId" />
+        <input type="submit" value="Delete" class="btn btn-default" />
+        <a asp-action="Index" class="btn btn-default">Cancel</a>
+    </form>
+</div>

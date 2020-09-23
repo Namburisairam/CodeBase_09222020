@@ -1,0 +1,110 @@
+﻿@model IncidentTracking.Models.ManufacturingArea
+@*
+    * ================================================================================
+    * MODULE:  ManufacturingAreas\Details.cshtml
+    *
+    * PURPOSE:
+    * This view supports manufacturing area details.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-10-18
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2018-10-30  Initial version
+    * Brad Robbins     2019-05-24  Added ReportLabel
+    * Brad Robbins     2019-09-24  Added SME and Mgr fields
+    * Brad Robbins     2020-04-29  Added support for T3Group; added links to control system list
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Manufacturing Area Details</h2>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>Mfg Area Name</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportLabel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReportLabel)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SmeName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SmeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SmeEmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SmeEmailAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MgrName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MgrName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MgrEmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MgrEmailAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReplyToEmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReplyToEmailAddress)
+        </dd>
+
+        <dt>Tier 3 Group</dt>
+        <dd>    
+            @if (Model.T3Group != null)
+            {
+                <a asp-action="Details" asp-controller="T3Groups" asp-route-id="@Model.T3Group.T3GroupId">@Model.T3Group.Name</a> 
+            } 
+            else 
+            {
+                <span>N/A</span>
+            }
+        </dd>
+    </dl>
+</div>
+@if (Model.ControlSystems.Count > 0)
+{
+    <hr />
+    <div>
+        <h4>Control Systems</h4>
+        <ul>
+            @foreach (var cs in Model.ControlSystems)
+            {
+                <li>
+                    <a asp-action="Details" asp-controller="ControlSystems" asp-route-id="@cs.ControlSystemId">@cs.Name</a>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ManufacturingAreaId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

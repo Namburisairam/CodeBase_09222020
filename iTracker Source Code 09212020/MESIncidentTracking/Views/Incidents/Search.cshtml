@@ -1,0 +1,145 @@
+﻿@model ES13Web.Models.IncidentSearchViewModel
+@*
+    * ================================================================================
+    * MODULE:  Incidents\Search.cshtml
+    *
+    * PURPOSE:
+    * This view supports searching incidents.
+    *
+    * Copyright:    ©2019 by E2i, Inc.
+    * Created Date: 2019-04-26
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2019-04-26  Initial version
+    * Brad Robbins	   2019-08-13  Changed form to get method
+    * Brad Robbins     2019-09-12  Reformatting; new fields
+    * Brad Robbins     2019-10-04  Added batch number
+    * Brad Robbins     2020-05-13  Added short description
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h2>Advanced Search</h2>
+<hr />
+
+
+<form asp-action="Search" autocomplete="off" method="get">
+    <div class="row">
+        <div class="col-md-2 col-lg-2">
+            <div class="form-group">
+                <label asp-for="StartDateTime" class="control-label"></label>
+                <input asp-for="StartDateTime" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDateTime" class="control-label"></label>
+                <input asp-for="EndDateTime" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Limit" class="control-label"></label>
+                <input asp-for="Limit" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-3">
+            <div class="form-group">
+                <label asp-for="ManufacturingAreaId" class="control-label"></label>
+                <select asp-for="ManufacturingAreaId" class="form-control" asp-items="ViewBag.ManufacturingAreaId">
+                    <option value="">Select manufacturing area</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassificationId" class="control-label"></label>
+                <select asp-for="ClassificationId" class="form-control" asp-items="ViewBag.ClassificationId">
+                    <option value="">Select classification</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EngineerName" class="control-label"></label>
+                <input asp-for="EngineerName" class="form-control" placeholder="Filter by engineer" />
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="form-group">
+                <label asp-for="HasWerumTicket" class="control-label"></label>
+                <select asp-for="HasWerumTicket" class="form-control" asp-items="Html.GetEnumSelectList<TernaryOption>()">
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resolved" class="control-label"></label>
+                <select asp-for="Resolved" class="form-control" asp-items="Html.GetEnumSelectList<TernaryOption>()">
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="InterventionPerformed" class="control-label"></label>
+                <select asp-for="InterventionPerformed" class="form-control" asp-items="Html.GetEnumSelectList<TernaryOption>()">
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="form-group">
+                <label asp-for="WerumTicket" class="control-label"></label>
+                <input asp-for="WerumTicket" class="form-control" placeholder="Filter Werum ticket" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">BT Service Request</label>
+                <input asp-for="BTServiceRequestNumber" class="form-control" placeholder="Filter BT request" />
+            </div>
+            <div class="form-group">
+                <label asp-for="BatchNumber" class="control-label"></label>
+                <input asp-for="BatchNumber" class="form-control" placeholder="Filter batch number" />
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-3">
+            <div class="form-group">
+                <label asp-for="ShortDescription" class="control-label"></label>
+                <input asp-for="ShortDescription" class="form-control" placeholder="Filter short description" />
+            </div>
+            <div class="form-group">
+                <label asp-for="IncidentDescription" class="control-label"></label>
+                <input asp-for="IncidentDescription" class="form-control" placeholder="Filter incident description" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ActionSummary" class="control-label"></label>
+                <input asp-for="ActionSummary" class="form-control" placeholder="Filter action summary" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Search" asp-action="Search" class="btn btn-default" />
+    
+        <input id="exportButton" type="submit" value="Export Results" asp-action="Export" class="btn btn-default" disabled="disabled"/>
+    </div>
+    
+
+    <p><strong>NOTE:</strong> This page always returns the most recent results, as limited above.  Filter and sorting occur before this limit is applied.</p>
+</form>
+
+<hr />
+<div>
+    <h3>Results</h3>
+    @if (Model.Results.Count() > 0)
+    {
+        <div id="resultsTable"></div>
+        @await Html.PartialAsync("IncidentSearchResultsPartialView", Model.Results)
+    }
+    else
+    {
+        <p id="noResults">No incidents match search criteria or no filtering applied.</p>
+    }
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($('#resultsTable').length) {
+            $('#exportButton').removeAttr('disabled');
+        }
+    })
+</script>

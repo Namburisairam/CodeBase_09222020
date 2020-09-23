@@ -1,0 +1,101 @@
+﻿@model IncidentTracking.Models.ControlSystem
+@*
+    * ================================================================================
+    * MODULE:  ControlSystems\AddEditPartialView.cshtml
+    *
+    * PURPOSE:
+    * This view supports adding/editing control systems.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-11-01
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2018-11-01  Initial version
+    * Brad Robbins     2020-04-10  Added IsObsolete
+    * ================================================================================
+*@
+
+<div class="row">
+    <div class="col-sm-8">
+        <div class="form-group">
+            <label asp-for="ManufacturingAreaId" class="control-label"></label>
+            <select asp-for="ManufacturingAreaId" class="form-control" asp-items="ViewBag.ManufacturingAreaId">
+                <option value="">Select manufacturing area</option>
+            </select>
+            <span asp-validation-for="ManufacturingAreaId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="Required control system name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <input asp-for="Description" class="form-control" placeholder="Add description" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PlcId" class="control-label"></label>
+            <input asp-for="PlcId" class="form-control" placeholder="Add PLC ID" />
+            <span asp-validation-for="PlcId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhysicalLocation" class="control-label"></label>
+            <input asp-for="PhysicalLocation" class="form-control" placeholder="Add physical location" />
+            <span asp-validation-for="PhysicalLocation" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="GdrsLocation" class="control-label"></label>
+            <input asp-for="GdrsLocation" class="form-control" placeholder="Add GDRS location" />
+            <span asp-validation-for="GdrsLocation" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label asp-for="IsNetworked" class="control-label"></label>
+            <select asp-for="IsNetworked" class="form-control">
+                <option value="">Select network result</option>
+                <option value="Ethernet to Modbus Bridge">Ethernet to Modbus Bridge</option>
+                <option value="No">No</option>
+                <option value="No - Unable to connect from VM">No - Unable to connect from VM</option>
+                <option value="Yes">Yes</option>
+                <option value="Yes - Through Backplane">Yes - Through Backplane</option>
+
+            </select>
+            <span asp-validation-for="IsNetworked" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IpAddress" class="control-label"></label>
+            <input asp-for="IpAddress" class="form-control" placeholder="Add IP address" />
+            <span asp-validation-for="IpAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Make" class="control-label"></label>
+            <input asp-for="Make" class="form-control" placeholder="Add controller make/brand" />
+            <span asp-validation-for="Make" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Model" class="control-label"></label>
+            <input asp-for="Model" class="form-control" placeholder="Add controller model" />
+            <span asp-validation-for="Model" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Firmware" class="control-label"></label>
+            <input asp-for="Firmware" class="form-control" placeholder="Add firmware version" />
+            <span asp-validation-for="Firmware" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            @Html.CheckBox("IsInAutosave", Model.IsInAutosave ?? false, new { @class = "form-control-sm" })
+            <label asp-for="IsInAutosave" class="control-label"></label>
+            <span asp-validation-for="IsInAutosave" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            @Html.CheckBox("IsObsolete", Model.IsObsolete ?? false, new { @class = "form-control-sm" })
+            <label asp-for="IsObsolete" class="control-label"></label>
+            <span asp-validation-for="IsObsolete" class="text-danger"></span>
+        </div>
+    </div>
+</div>

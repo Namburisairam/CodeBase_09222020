@@ -1,0 +1,73 @@
+@model ES13Web.Models.ManufacturingArea
+@*
+    * ================================================================================
+    * MODULE:  ManufacturingAreas\Details.cshtml
+    *
+    * PURPOSE:
+    * This view supports manufacturing area details.
+    *
+    * Copyright:    ©2019 by E2i, Inc.
+    * Created Date: 2019-09-24
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2019-09-24  Initial version
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Manufacturing Area Details</h2>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>Mfg Area Name</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportLabel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReportLabel)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SmeName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SmeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SmeEmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SmeEmailAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MgrName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MgrName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MgrEmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MgrEmailAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReplyToEmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReplyToEmailAddress)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ManufacturingAreaId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,50 @@
+﻿@model IncidentTracking.Models.Incident
+@*
+    * ================================================================================
+    * MODULE:  Incidents\Create.cshtml
+    *
+    * PURPOSE:
+    * This view supports adding of new incidents.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-10-18
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2018-10-29  Initial version
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Add Incident</h2>
+<p class="alert-danger">@TempData["Error"]</p>
+<hr />
+
+
+<form asp-action="Create" autocomplete="off">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="LocalTimeString" />
+
+    <div class="row">
+        @{ await Html.RenderPartialAsync("AddEditIncidentPartialView"); }
+        @{ await Html.RenderPartialAsync("AddEditES11PartialView"); }
+    </div>
+    <div class="form-group">
+        <input id="submitButton" type="submit" value="Create" class="btn btn-default" />
+    </div>
+</form>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{ await Html.RenderPartialAsync("AddEditIncidentScripts"); }
+    @{ await Html.RenderPartialAsync("AddEditES11Scripts"); }
+}

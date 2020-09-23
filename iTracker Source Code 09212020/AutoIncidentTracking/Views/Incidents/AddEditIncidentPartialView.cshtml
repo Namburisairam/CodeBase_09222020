@@ -1,0 +1,130 @@
+﻿@model IncidentTracking.Models.Incident
+@*
+    * ================================================================================
+    * MODULE:  Incidents\AddEditIncidentPartialView.cshtml
+    *
+    * PURPOSE:
+    * This partial view adds controls that are common to both Add and Edit view
+    * for incidents.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-10-18
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author            Date        Description
+    * Brad Robbins	    2018-10-29  Initial version
+    * Brad Robbins      2019-05-01  Disabled ES11 log number; added BT service request fields
+    * Brad Robbins      2019-08-29  Added engineering time
+    * Brad Robbins      2020-03-11  Enabled ES11
+    * Brad Robbins      2020-03-18  Added escalation
+    * Brad Robbins      2020-05-13  Added short description
+    * ================================================================================
+*@
+
+<div class="col-md-6">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label asp-for="EngineerName" class="control-label"></label>
+                <input asp-for="EngineerName" class="form-control" readonly="readonly" />
+                <span asp-validation-for="EngineerName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LocalActivityPerformedDateTime" class="control-label"></label>
+                <input id="LocalCreatedDateTime" asp-for="LocalActivityPerformedDateTime" class="form-control" type="text"/>
+                <span asp-validation-for="LocalActivityPerformedDateTime" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="ManufacturingAreaId" class="control-label"></label>
+                <select asp-for="ManufacturingAreaId" class="form-control" asp-items="ViewBag.ManufacturingAreaId">
+                    <option value="">Select manufacturing area</option>
+                </select>
+                <span asp-validation-for="ManufacturingAreaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ControlSystemId" class="control-label"></label>
+                <select asp-for="ControlSystemId" class="form-control" asp-items="ViewBag.ControlSystemId">
+                    <option value="">Select control system</option>
+                </select>
+                <span asp-validation-for="ControlSystemId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AreaContact" class="control-label"></label>
+                <input asp-for="AreaContact" class="form-control" placeholder="Add area contact" />
+                <span asp-validation-for="AreaContact" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassificationId" class="control-label"></label>
+                <select asp-for="ClassificationId" class="form-control" asp-items="ViewBag.ClassificationId">
+                    <option value="">Select classification</option>
+                </select>
+                <span asp-validation-for="ClassificationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimatedDownTimeHours" class="control-label"></label>
+                <input asp-for="EstimatedDownTimeHours" class="form-control" placeholder="#.#" />
+                <span asp-validation-for="EstimatedDownTimeHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EngineeringTimeHours" class="control-label"></label>
+                <input asp-for="EngineeringTimeHours" class="form-control" placeholder="#.#" />
+                <span asp-validation-for="EngineeringTimeHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @Html.CheckBox("Resolved", Model.Resolved ?? false)
+                <label asp-for="Resolved" class="control-label"></label>
+                <span asp-validation-for="Resolved" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                @Html.CheckBox("RequireES11", Model.RequireES11 ?? false)
+                <label asp-for="RequireES11" class="control-label"></label>
+                <span asp-validation-for="RequireES11" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="form-group">
+                <label asp-for="ShortDescription" class="control-label"></label>
+                <textarea asp-for="ShortDescription" class="form-control" rows="2" cols="50" placeholder="Add short description of the incident"></textarea>
+                <span asp-validation-for="ShortDescription" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IncidentDescription" class="control-label"></label>
+                <textarea asp-for="IncidentDescription" class="form-control" rows="5" cols="50" placeholder="Add description of the incident"></textarea>
+                <span asp-validation-for="IncidentDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActionSummary" class="control-label"></label>
+                <textarea asp-for="ActionSummary" class="form-control" rows="5" cols="50" placeholder="Add description of actions taken"></textarea>
+                <span asp-validation-for="ActionSummary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HandoffWork" class="control-label"></label>
+                <textarea asp-for="HandoffWork" class="form-control" rows="4" cols="50" placeholder="Add description of handoff work performed"></textarea>
+                <span asp-validation-for="HandoffWork" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BTServiceRequestNumber" class="control-label"></label>
+                <input asp-for="BTServiceRequestNumber" class="form-control" cols="50" placeholder="Add request number" />
+                <span asp-validation-for="BTServiceRequestNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BTServiceRequestSummary" class="control-label"></label>
+                <textarea asp-for="BTServiceRequestSummary" class="form-control" rows="4" cols="50" placeholder="Add description of BT service request"></textarea>
+                <span asp-validation-for="BTServiceRequestSummary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Escalation" class="control-label"></label>
+                <input asp-for="Escalation" class="form-control" cols="50" placeholder="Add escalation" />
+                <span asp-validation-for="Escalation" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</div>

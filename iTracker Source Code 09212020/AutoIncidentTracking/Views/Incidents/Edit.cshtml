@@ -1,0 +1,60 @@
+﻿@model IncidentTracking.Models.Incident
+@*
+    * ================================================================================
+    * MODULE:  Incidents\Edit.cshtml
+    *
+    * PURPOSE:
+    * This view supports editing of incidents.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-10-18
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2018-10-29  Initial version
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@if (Model.RequireES11.HasValue && Model.RequireES11.Value)
+{
+    <h2>Edit Incident/ES-11: @Model.LogNumber</h2>
+}
+else
+{
+    <h2>Edit Incident</h2>
+}
+<p><strong>Incident ID:</strong> @Model.IncidentId</p>
+<p class="alert-success">@TempData["Message"]</p>
+<p class="alert-danger">@TempData["Error"]</p>
+<hr />
+
+<form asp-action="Edit" autocomplete="off">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="IncidentId" />
+    <input type="hidden" asp-for="CreatedDateTime" />
+    <input type="hidden" asp-for="LocalCreatedDateTime" />
+    <input type="hidden" asp-for="LocalTimeString" />
+
+
+    <div class="row">
+        @{ await Html.RenderPartialAsync("AddEditIncidentPartialView"); }
+        @{ await Html.RenderPartialAsync("AddEditES11PartialView"); }
+    </div>
+    <div class="form-group">
+        <input id="submitButton" type="submit" value="Save" class="btn btn-default" />
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{ await Html.RenderPartialAsync("AddEditIncidentScripts"); }
+    @{ await Html.RenderPartialAsync("AddEditES11Scripts"); }
+}

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "IncidentTrackingReports", "IncidentTrackingReports\IncidentTrackingReports.rptproj", "{F0F9C95E-38FE-41B1-A509-88796C9DD7E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F0F9C95E-38FE-41B1-A509-88796C9DD7E5}.Debug|Default.ActiveCfg = Debug
+		{F0F9C95E-38FE-41B1-A509-88796C9DD7E5}.Debug|Default.Build.0 = Debug
+		{F0F9C95E-38FE-41B1-A509-88796C9DD7E5}.Debug|Default.Deploy.0 = Debug
+		{F0F9C95E-38FE-41B1-A509-88796C9DD7E5}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{F0F9C95E-38FE-41B1-A509-88796C9DD7E5}.DebugLocal|Default.Build.0 = DebugLocal
+		{F0F9C95E-38FE-41B1-A509-88796C9DD7E5}.DebugLocal|Default.Deploy.0 = DebugLocal
+		{F0F9C95E-38FE-41B1-A509-88796C9DD7E5}.Release|Default.ActiveCfg = Release
+		{F0F9C95E-38FE-41B1-A509-88796C9DD7E5}.Release|Default.Build.0 = Release
+		{F0F9C95E-38FE-41B1-A509-88796C9DD7E5}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7F5AF80D-3052-43CC-96BE-C893CCD0CCBF}
+	EndGlobalSection
+EndGlobal

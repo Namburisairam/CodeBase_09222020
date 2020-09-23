@@ -1,0 +1,40 @@
+﻿@model IncidentTracking.Models.ControlSystem
+@*
+    * ================================================================================
+    * MODULE:  ControlSystems\Create.cshtml
+    *
+    * PURPOSE:
+    * This view supports adding new control systems.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-11-01
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2018-11-01  Initial version
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Add Control System</h2>
+<p class="alert-danger">@TempData["Error"]</p>
+<hr />
+<form asp-action="Create" autocomplete="off">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @{ await Html.RenderPartialAsync("AddEditPartialView"); }
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

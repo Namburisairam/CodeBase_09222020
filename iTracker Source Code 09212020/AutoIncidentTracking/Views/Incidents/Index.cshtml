@@ -1,0 +1,191 @@
+﻿@model IEnumerable<IncidentTracking.Models.IncidentIndexViewModel>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@*
+    * ================================================================================
+    * MODULE:  Incidents\Index.cshtml
+    *
+    * PURPOSE:
+    * This view supports listing incidents.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-10-18
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author            Date        Description
+    * Brad Robbins	    2018-10-29  Initial version
+    * Brad Robbins      2019-05-01  Disabled ES11 log number
+    * Brad Robbins      2019-12-06  Added conditions for edit link
+    * Brad Robbins      2020-03-11  Re-enabled ES11 Log number
+    * Brad Robbins      2020-05-13  Replaced control system with short description
+    * Brad Robbins      2020-06-02  Removed "root case" in favor of classification
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Index";
+}
+@{ var currentUserId = User.Identity.Name.ToUpper(); }
+@functions {
+    //helper to simplify AddGlyph
+    private bool IsOrderedBy(string orderby)
+    {
+        return ViewData["CurrentSort"] != null && ViewData["CurrentSort"].ToString() == orderby;
+    }
+
+    //helper to set glyph classes 
+    public string AddGlyph(string orderby)
+    {
+        if (IsOrderedBy(orderby))
+            return "glyphicon glyphicon-arrow-up";
+        else if (IsOrderedBy(orderby + "_desc"))
+            return "glyphicon glyphicon-arrow-down";
+        else if (IsOrderedBy(orderby + "_asc"))
+            return "glyphicon glyphicon-arrow-up";
+        else
+            return "";
+    }
+}
+
+<h2>Incidents</h2>
+<p class="alert-success">@TempData["Message"]</p>
+<p class="alert-danger">@TempData["Error"]</p>
+
+<p>
+    <a asp-action="Create" class="btn btn-default">Create New</a>
+</p>
+
+<form asp-action="Index" method="get" autocomplete="off">
+    <div class="form-actions no-color">
+        <p>
+            Filter by: <input type="text" name="SearchString" value='@ViewData["CurrentFilter"]' />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Search">Advanced Search</a> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+
+        @if (ViewData["RowCount"] != null)
+        {
+            <p>@ViewData["RowCount"] rows match search criteria</p>
+        }
+    </div>
+</form>
+
+<table class="table table-striped table-condensed">
+    <thead>
+        <tr>
+            <th rowspan="2">
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["LogNumberSortParam"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">ES11 Log Number</a>
+                <span class='@AddGlyph("log")'></span>
+            </th>
+            <th rowspan="2" class="visible-lg">
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["DateSortParam"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Activity Performed</a>
+                <span class='@AddGlyph("date")'></span>
+            </th>
+            <th rowspan="2">
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["MfgAreaSortParam"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Mfg Area</a>
+                <span class='@AddGlyph("mfg")'></span>
+            </th>
+            <th rowspan="2">
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["ShortDescriptionSortParam"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Short Description</a>
+                <span class='@AddGlyph("dscrptn")'></span>
+            </th>
+            <th rowspan="2" class="visible-md visible-lg">
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CauseSortParam"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Classification</a>
+                <span class='@AddGlyph("cause")'></span>
+            </th>
+            <th rowspan="2">
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["EngineerSortParam"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Engineer Name</a>
+                <span class='@AddGlyph("engr")'></span>
+            </th>
+            <th colspan="3" class="visible-lg">Requirements</th>
+            <th rowspan="2"></th>
+        </tr>
+        <tr>
+            <th class="visible-lg">
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["PreApprovalSortParam"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Pre-Approval</a>
+                <span class='@AddGlyph("preapp")'></span>
+            </th>
+            <th class="visible-lg">
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["MgrApprovalSortParam"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Mgr Approval</a>
+                <span class='@AddGlyph("mgrapp")'></span>
+            </th>
+            <th class="visible-lg">
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["TagoutSortParam"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Tagout</a>
+                <span class='@AddGlyph("tagout")'></span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LogNumber)
+                </td>
+
+                <td class="visible-lg">
+                    @Html.DisplayFor(modelItem => item.FormattedLocalActivityPerformedDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManufacturingAreaName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortDescription)
+                </td>
+                <td class="visible-md visible-lg">
+                    @Html.DisplayFor(modelItem => item.ClassificationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EngineerName)
+                </td>
+
+                <td class="visible-lg">
+                    @Html.DisplayFor(modelItem => item.RequirePreApproval)
+                </td>
+                <td class="visible-lg">
+                    @Html.DisplayFor(modelItem => item.RequireManagerApproval)
+                </td>
+
+                <td class="visible-lg">
+                    @Html.DisplayFor(modelItem => item.RequireTagOut)
+                </td> 
+                <td>
+                    @if(currentUserId.Equals(item.UserId, StringComparison.CurrentCultureIgnoreCase) || (await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.IncidentId">Edit</a> 
+                        <span>|</span>
+                    } 
+                    <a asp-action="Details" asp-route-id="@item.IncidentId">Details</a>
+                    @if (item.RequireES11)
+                    {
+                        <span>|</span>
+                        <a asp-action="GetDocument" asp-route-id="@item.IncidentId">Form</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@await Html.PartialAsync("PagingPartialView")

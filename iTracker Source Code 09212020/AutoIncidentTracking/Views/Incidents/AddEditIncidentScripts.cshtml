@@ -1,0 +1,77 @@
+﻿ @*
+ * ================================================================================
+ * MODULE:  Incidents\AddEditIncidentScripts.cs
+ *
+ * PURPOSE:
+ * This partial view adds javascript that is necessary for cascading dropdown lists.
+ *
+ * Copyright:    ©2018 by E2i, Inc.
+ * Created Date: 2018-10-18
+ * Author:       Brad Robbins (brobbins@e2i.net)
+ *
+ * --------------------------------------------------------------------------------
+ * Revision History:
+ * Author           Date        Description
+ * Brad Robbins	    2018-10-18  Initial version
+ * Brad Robbins     2020-06-11  Updated $('#ManufacturingAreaId').change to update async method call
+ * ================================================================================
+*@
+<script type="text/javascript">
+    $().ready(function () {
+        if ($('#RequireES11').is(':checked')) {
+            $("#ES11").show();
+        } else {
+            $("#ES11").hide();
+        }
+    });
+
+    $('#RequireES11').change(function () {
+        if ($('#RequireES11').is(':checked')) {
+            $("#ES11").show();
+        } else {
+            $("#ES11").hide();
+        }
+    });
+
+    //update lists as Manufacturing Area changes
+    $('#ManufacturingAreaId').change(function () {
+        var selectedManufacturingArea = $('#ManufacturingAreaId').val();
+        var controlSystemSelect = $('#ControlSystemId');
+
+        //blank the cascaded lists
+        controlSystemSelect.empty();
+
+        if (selectedManufacturingArea != null && selectedManufacturingArea != '') {
+
+            //update the control system list based on the manufacturing area selection
+            $.getJSON(
+                '@Url.Action("GetControlSystems")', //see controller action GetControlSystemsAsync
+                { manufacturingAreaId: selectedManufacturingArea }, //data
+
+                //callback to reload the software list
+                function (controlSystems) {
+                    if (controlSystems != null && !jQuery.isEmptyObject(controlSystems)) {
+                        //add help text
+                        controlSystemSelect.append($('<option/>', {
+                            value: null,
+                            text: "Select Control System"
+                        }));
+                        $.each(controlSystems, function (index, cs) {
+                            controlSystemSelect.append($('<option/>', {
+                                value: cs.controlSystemId,
+                                text: cs.name
+                            }));
+                        });
+                    };
+                });
+        }
+    });
+
+    //when the form is submitted, update the local time
+    $('#submitButton').click(function () {
+        var dt = new Date();
+        $('#LocalTimeString').val(dt.toISOString());
+        $('form').submit();
+    });
+
+</script>

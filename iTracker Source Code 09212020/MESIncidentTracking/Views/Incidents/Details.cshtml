@@ -1,0 +1,222 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@model ES13Web.Models.Incident
+@*
+    * ================================================================================
+    * MODULE:  Incidents\Details.cshtml
+    *
+    * PURPOSE:
+    * This view supports incident details.
+    *
+    * Copyright:    ©2019 by E2i, Inc.
+    * Created Date: 2019-04-26
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2019-04-26  Initial version
+    * Brad Robbins	   2019-08-09  Expanded email body
+    * Brad Robbins     2019-08-29  Added engineering time
+    * Brad Robbins     2019-09-11  Enabled RequireES13; added new fields
+    * Brad Robbins     2019-09-23  Added incident URL to email body
+    * Brad Robbins     2019-10-04  Added batch number
+    * Brad Robbins     2019-10-09  Limited the size of email contents
+    * Brad Robbins     2019-12-03  Added user check for edit link
+    * Brad Robbins     2020-03-18  Added escalation field
+    * Brad Robbins     2020-05-13  Added short description
+    * Brad Robbins     2020-06-02  Removed "root cause" in favor of classification
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Details";
+}
+
+@{ 
+    //limit the size of the incident description and action summary
+    var incDesc = Model.IncidentDescription.Length > 350 ?
+        Model.IncidentDescription.Substring(0, 346) + "..." :
+        Model.IncidentDescription;
+    var actSumm = Model.ActionSummary.Length > 350 ?
+        Model.ActionSummary.Substring(0, 346) + "..." :
+        Model.ActionSummary;
+    var link = "Incident URL: http://" + Context.Request.Host + Context.Request.PathBase + Context.Request.Path;
+
+    var desc = "Incident ID: " + Model.IncidentId + Environment.NewLine +
+               "Engineer Name: " + Model.EngineerName + Environment.NewLine +
+               "Short Description: " + Model.ShortDescription + Environment.NewLine +
+               "Area Contact: " + Model.AreaContact + Environment.NewLine +
+               String.Format("Est. Downtime (h): {0:0.00}", Model.EstimatedDownTimeHours) + Environment.NewLine +
+               "Classification: " + Model.Classification.Name + Environment.NewLine +
+               "Incident Description: " + incDesc + Environment.NewLine +
+               "Action Summary: " + actSumm + Environment.NewLine + Environment.NewLine +
+               link;
+    var emailBody = System.Uri.EscapeDataString(desc);
+}
+
+<h2>Incident Details</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-12 col-lg-10">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.IncidentId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IncidentId)
+            </dd>
+            <dt>Created</dt>
+            <dd>
+                @Html.DisplayFor(model => model.FormattedLocalCreatedDateTime)
+            </dd>
+            <dt>Last Modified</dt>
+            <dd>
+                @Html.DisplayFor(model => model.FormattedLocalLastModifiedDateTime)
+            </dd>
+            <dt>Activity Performed</dt>
+            <dd>
+                @Html.DisplayFor(model => model.FormattedLocalActivityPerformedDateTime)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EngineerName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EngineerName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ShortDescription)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ShortDescription)
+            </dd>
+            <dt>Manufacturing Area</dt>
+            <dd>
+                @Html.DisplayFor(model => model.ManufacturingArea.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.AreaContact)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AreaContact)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EstimatedDownTimeHours)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EstimatedDownTimeHours)
+            </dd>
+            <dt>Engn. Time (hours)</dt>
+            <dd>
+                @Html.DisplayFor(model => model.EngineeringTimeHours)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ClassificationId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Classification.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IncidentDescription)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IncidentDescription)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ActionSummary)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ActionSummary)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.HandoffWork)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HandoffWork)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Resolved)
+            </dt>
+            <dd>
+                @Html.CheckBox("Resolved", Model.Resolved ?? false, new { @disabled = "disabled" })
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.RequireES13)
+            </dt>
+            <dd>
+                @Html.CheckBox("RequireES13", Model.RequireES13 ?? false, new { @disabled = "disabled" })
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.WerumTicket)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.WerumTicket)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.WerumTicketResolved)
+            </dt>
+            <dd>
+                @Html.CheckBox("WerumTicketResolved", Model.WerumTicketResolved ?? false, new { @disabled = "disabled" })
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.WerumTicketSummary)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.WerumTicketSummary)
+            </dd>
+
+            <dt>BT Service Request</dt>
+            <dd>
+                @Html.DisplayFor(model => model.BTServiceRequestNumber)
+            </dd>
+
+            <dt>BT Service Summary</dt>
+            <dd>
+                @Html.DisplayFor(model => model.BTServiceRequestSummary)
+            </dd>
+            
+            <dt>
+                @Html.DisplayNameFor(model => model.BatchNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.BatchNumber)
+            </dd>
+            
+            <dt>
+                @Html.DisplayNameFor(model => model.Escalation)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Escalation)
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div>
+
+    @if(User.Identity.Name.Equals(Model.UserId, StringComparison.CurrentCultureIgnoreCase) || (await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.IncidentId">Edit</a> 
+        <span>|</span>
+    }
+    @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+    {
+        <a asp-action="Delete" asp-route-id="@Model.IncidentId">Delete</a>
+        <span>|</span>
+    }
+    <a id="duplicate" asp-action="Duplicate" asp-route-id="@Model.IncidentId">Duplicate</a> |
+    <a href="mailto:?subject=Incident%20Report&body=@emailBody">Email Incident</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script type="text/javascript">
+
+    $("#duplicate").click(function () {
+        var dt = new Date().toISOString();
+
+        var ref = $(this).attr("href");
+        $(this).attr("href", ref + "?date=" + dt);
+    });
+</script>

@@ -1,0 +1,137 @@
+﻿@model IncidentTracking.Models.IncidentSearchViewModel
+@*
+    * ================================================================================
+    * MODULE:  Incidents\Search.cshtml
+    *
+    * PURPOSE:
+    * This view supports searching incidents.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-11-06
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author            Date        Description
+    * Brad Robbins	    2018-11-06  Initial version
+    * Brad Robbins      2019-05-01  Disabled ES11 log number
+    * Brad Robbins      2019-08-13  Changed form to get 
+    * Brad Robbins      2020-03-11  Re-enabled activity type
+    * Brad Robbins      2020-05-13  Added short description
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h2>Advanced Search</h2>
+<hr />
+
+
+<form asp-action="Search" autocomplete="off" method="get">
+    <div class="row">
+        <div class="col-md-2 col-lg-2">
+            <div class="form-group">
+                <label asp-for="StartDateTime" class="control-label"></label>
+                <input asp-for="StartDateTime" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EndDateTime" class="control-label"></label>
+                <input asp-for="EndDateTime" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="form-group">
+                <label asp-for="EngineerName" class="control-label"></label>
+                <input asp-for="EngineerName" class="form-control" placeholder="Filter by engineer" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassificationId" class="control-label"></label>
+                <select asp-for="ClassificationId" class="form-control" asp-items="ViewBag.ClassificationId">
+                    <option value="">Select classification</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="form-group">
+                <label asp-for="ManufacturingAreaId" class="control-label"></label>
+                <select asp-for="ManufacturingAreaId" class="form-control" asp-items="ViewBag.ManufacturingAreaId">
+                    <option value="">Select manufacturing area</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ControlSystemId" class="control-label"></label>
+                <select asp-for="ControlSystemId" class="form-control" asp-items="ViewBag.ControlSystemId">
+                    <option value="">Select control system</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="form-group">
+                <label asp-for="IncidentDescription" class="control-label"></label>
+                <input asp-for="IncidentDescription" class="form-control" placeholder="Filter by incident description" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ActionSummary" class="control-label"></label>
+                <input asp-for="ActionSummary" class="form-control" placeholder="Filter by action summary" />
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="form-group">
+                <label asp-for="LogNumber" class="control-label"></label>
+                <input asp-for="LogNumber" class="form-control" placeholder="Filter by log number" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ShortDescription" class="control-label"></label>
+                <input asp-for="ShortDescription" class="form-control" placeholder="Filter by short description" />
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="form-group">
+                <label asp-for="Limit" class="control-label"></label>
+                <input asp-for="Limit" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ActivityTypeId" class="control-label"></label>
+                <select asp-for="ActivityTypeId" class="form-control" asp-items="ViewBag.ActivityTypeId">
+                    <option value="">Select activity type</option>
+                </select> 
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Search" asp-action="Search" class="btn btn-default" />
+    
+        <input id="exportButton" type="submit" value="Export Results" asp-action="Export" class="btn btn-default" disabled="disabled"/>
+    </div>
+    
+
+    <p><strong>NOTE:</strong> This page always returns the most recent results, as limited above.  Filtering and sorting occur before this limit is applied.</p>
+</form>
+
+<hr />
+<div>
+    <h3>Results</h3>
+    @if (Model.Results.Count() > 0)
+    {
+        <div id="resultsTable"></div>
+        @await Html.PartialAsync("IncidentSearchResultsPartialView", Model.Results)
+    }
+    else
+    {
+        <p id="noResults">No incidents match search criteria or no filtering applied.</p>
+    }
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($('#resultsTable').length) {
+            $('#exportButton').removeAttr('disabled');
+        }
+    })
+</script>

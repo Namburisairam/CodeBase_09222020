@@ -1,0 +1,70 @@
+@model IncidentTracking.Models.ManufacturingArea
+@*
+    * ================================================================================
+    * MODULE:  ManufacturingAreas\AddEditPartialView.cshtml
+    *
+    * PURPOSE:
+    * This view supports adding/editing manufacturing areas.
+    *
+    * Copyright:    ©2020 by E2i, Inc.
+    * Created Date: 2020-04-29
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2020-04-29  Initial version
+    * ================================================================================
+*@
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label asp-for="ManufacturingAreaId" class="control-label"></label>
+            <input asp-for="ManufacturingAreaId" class="form-control" placeholder="Required unique area number" />
+            <span asp-validation-for="ManufacturingAreaId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="Required unique area name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ReportLabel" class="control-label"></label>
+            <input asp-for="ReportLabel" class="form-control" placeholder="Required report label" />
+            <span asp-validation-for="ReportLabel" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SmeName" class="control-label"></label>
+            <input asp-for="SmeName" class="form-control" placeholder="SME name" />
+            <span asp-validation-for="SmeName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SmeEmailAddress" class="control-label"></label>
+            <input asp-for="SmeEmailAddress" class="form-control" placeholder="SME email address" />
+            <span asp-validation-for="SmeEmailAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MgrName" class="control-label"></label>
+            <input asp-for="MgrName" class="form-control" placeholder="Manager name" />
+            <span asp-validation-for="MgrName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MgrEmailAddress" class="control-label"></label>
+            <input asp-for="MgrEmailAddress" class="form-control" placeholder="Manager email address" />
+            <span asp-validation-for="MgrEmailAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ReplyToEmailAddress" class="control-label"></label>
+            <input asp-for="ReplyToEmailAddress" class="form-control" placeholder="ReplyTo email address" />
+            <span asp-validation-for="ReplyToEmailAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="T3GroupId" class="control-label"></label>
+            <select asp-for="T3GroupId" class="form-control" asp-items="ViewBag.T3GroupId">
+                <option value="">Select group</option>
+            </select>
+            <span asp-validation-for="T3GroupId" class="text-danger"></span>
+        </div>
+    </div>
+</div>

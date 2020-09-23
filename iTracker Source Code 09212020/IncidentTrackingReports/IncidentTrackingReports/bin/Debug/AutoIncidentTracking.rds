@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="AutoIncidentTracking">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=pwkansql001;Initial Catalog=AUTO_IncidentTrack;User Id=AUTO_IncidentTrack; Password=Inc1d3ntTr4acking~;MultipleActiveResultSets=True</ConnectString>
+    <IntegratedSecurity>true</IntegratedSecurity>
+  </ConnectionProperties>
+  <DataSourceID>010e644f-947c-4437-8ebe-e180460896ea</DataSourceID>
+</RptDataSource>

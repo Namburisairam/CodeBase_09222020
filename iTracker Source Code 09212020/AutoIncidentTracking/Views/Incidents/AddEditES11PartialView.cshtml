@@ -1,0 +1,129 @@
+﻿@model IncidentTracking.Models.Incident
+@*
+    * ================================================================================
+    * MODULE:  Incidents\AddEditES11PartialView.cs
+    *
+    * PURPOSE:
+    * This partial view adds controls that are common to both Add and Edit view
+    * for ES11 entries.
+    *
+    * Copyright:    ©2018 by E2i, Inc.
+    * Created Date: 2018-10-18
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2018-10-18  Initial version
+    * Brad Robbins     2019-12-06  Added hidden UserId field
+    * Brad Robbins     2020-04-02  Removed software revision field
+    * ================================================================================
+*@
+<div id="ES11" class="col-md-6">
+    <h4>ES-11</h4>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                @Html.HiddenFor(m => m.UserId)
+            </div>
+            <div class="form-group">
+                <label asp-for="ActivityTypeId" class="control-label"></label>
+                <select asp-for="ActivityTypeId" class="form-control" asp-items="ViewBag.ActivityTypeId">
+                    <option value="">Select activity type</option>
+                </select>
+                <span asp-validation-for="ActivityTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemSpecifications" class="control-label"></label>
+                <input asp-for="SystemSpecifications" class="form-control" placeholder="Add system specifications" />
+                <span asp-validation-for="SystemSpecifications" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Drawings" class="control-label"></label>
+                <input asp-for="Drawings" class="form-control" placeholder="Add drawings" />
+                <span asp-validation-for="Drawings" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LotNumber" class="control-label"></label>
+                <input asp-for="LotNumber" class="form-control" placeholder="Add lot number" />
+                <span asp-validation-for="LotNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("ProgramComparisonMade", Model.ProgramComparisonMade ?? false)
+                <label asp-for="ProgramComparisonMade" class="control-label"></label>
+                <span asp-validation-for="ProgramComparisonMade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @Html.CheckBox("ActivityComplete", Model.ActivityComplete ?? false)
+                <label asp-for="ActivityComplete" class="control-label"></label>
+                <span asp-validation-for="ActivityComplete" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+
+            @*conditionally shown, start invisible*@
+            <div id="impacts">
+                <div class="form-group">
+                    @Html.CheckBox("ImpactSafety", Model.ImpactSafety ?? false)
+                    <label asp-for="ImpactSafety" class="control-label"></label>
+                    <span asp-validation-for="ImpactSafety" class="text-danger"></span>
+                </div>
+
+                @*conditionally shown, start invisible*@
+                <div class="form-group">
+                    @Html.CheckBox("ImpactQuality", Model.ImpactQuality ?? false)
+                    <label asp-for="ImpactQuality" class="control-label"></label>
+                    <span asp-validation-for="ImpactQuality" class="text-danger"></span>
+                </div>
+
+                @*conditionally shown, start invisible*@
+                <div class="form-group">
+                    @Html.CheckBox("ImpactValidation", Model.ImpactValidation ?? false)
+                    <label asp-for="ImpactValidation" class="control-label"></label>
+                    <span asp-validation-for="ImpactValidation" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div id="requirements">
+                @*conditionally shown, start invisible*@
+                <div class="form-group">
+                    @Html.CheckBox("RequirePreApproval", Model.RequirePreApproval ?? false)
+                    <label asp-for="RequirePreApproval" class="control-label"></label>
+                    <span asp-validation-for="RequirePreApproval" class="text-danger"></span>
+                </div>
+
+                @*conditionally shown, start invisible*@
+                <div class="form-group">
+                    @Html.CheckBox("RequireTagOut", Model.RequireTagOut ?? false)
+                    <label asp-for="RequireTagOut" class="control-label"></label>
+                    <span asp-validation-for="RequireTagOut" class="text-danger"></span>
+                </div>
+
+                @*conditionally shown, start invisible*@
+                <div class="form-group">
+                    @Html.CheckBox("RequireManagerApproval", Model.RequireManagerApproval ?? false)
+                    <label asp-for="RequireManagerApproval" class="control-label"></label>
+                    <span asp-validation-for="RequireManagerApproval" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div id="pre-approvals">
+                @*conditionally shown, start invisible*@
+                <div class="form-group">
+                    <label asp-for="PRNumber" class="control-label"></label>
+                    <input asp-for="PRNumber" class="form-control" />
+                    <span asp-validation-for="PRNumber" class="text-danger"></span>
+                </div>
+
+                @*conditionally shown, start invisible*@
+                <div class="form-group">
+                    <label asp-for="TagOutNumber" class="control-label"></label>
+                    <input asp-for="TagOutNumber" class="form-control" />
+                    <span asp-validation-for="TagOutNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

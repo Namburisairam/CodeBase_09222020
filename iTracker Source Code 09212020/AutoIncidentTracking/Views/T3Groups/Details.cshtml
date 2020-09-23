@@ -1,0 +1,71 @@
+@model IncidentTracking.Models.T3Group
+@*
+    * ================================================================================
+    * MODULE:  T3Groups\Details.cshtml
+    *
+    * PURPOSE:
+    * This view supports Tier 3 group details.
+    *
+    * Copyright:    ©2020 by E2i, Inc.
+    * Created Date: 2020-04-29
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author          Date        Description
+    * Brad Robbins	  2020-04-29  Initial version
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Tier 3 Group Details</h2>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>Mfg Area Name</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SmeName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SmeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SmeEmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SmeEmailAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReplyToEmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReplyToEmailAddress)
+        </dd>
+    </dl>
+</div>
+@if (Model.ManufacturingAreas.Count > 0)
+{
+    <hr />
+    <div>
+        <h4>Manufacturing Areas</h4>
+        <ul>
+            @foreach (var m in Model.ManufacturingAreas.OrderBy(a => a.Name))
+            {
+                <li>
+                    <a asp-action="Details" asp-controller="ManufacturingAreas" asp-route-id="@m.ManufacturingAreaId">@m.Name</a>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.T3GroupId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,82 @@
+﻿@model ES13Web.Models.ManufacturingArea
+@*
+    * ================================================================================
+    * MODULE:  ManufacturingAreas\Edit.cshtml
+    *
+    * PURPOSE:
+    * This view supports editing manufacturing areas.
+    *
+    * Copyright:    ©2019 by E2i, Inc.
+    * Created Date: 2019-04-26
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2019-04-26  Initial version
+    * Brad Robbins     2019-05-24  Added ReportLabel
+    * Brad Robbins     2019-09-24  Added SME and Mgr fields
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit Manufacturing Area</h2>
+<p class="alert-danger">@TempData["Error"]</p>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" autocomplete="off">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ManufacturingAreaId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Required unique area name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReportLabel" class="control-label"></label>
+                <input asp-for="ReportLabel" class="form-control" placeholder="Required report label" />
+                <span asp-validation-for="ReportLabel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SmeName" class="control-label"></label>
+                <input asp-for="SmeName" class="form-control" placeholder="SME name" />
+                <span asp-validation-for="SmeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SmeEmailAddress" class="control-label"></label>
+                <input asp-for="SmeEmailAddress" class="form-control" placeholder="SME email address" />
+                <span asp-validation-for="SmeEmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MgrName" class="control-label"></label>
+                <input asp-for="MgrName" class="form-control" placeholder="Manager name" />
+                <span asp-validation-for="MgrName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MgrEmailAddress" class="control-label"></label>
+                <input asp-for="MgrEmailAddress" class="form-control" placeholder="Manager email address" />
+                <span asp-validation-for="MgrEmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReplyToEmailAddress" class="control-label"></label>
+                <input asp-for="ReplyToEmailAddress" class="form-control" placeholder="ReplyTo email address" />
+                <span asp-validation-for="ReplyToEmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

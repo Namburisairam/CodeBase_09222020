@@ -1,0 +1,48 @@
+﻿@model ES13Web.Models.Incident
+@*
+    * ================================================================================
+    * MODULE:  Incidents\Create.cshtml
+    *
+    * PURPOSE:
+    * This view supports adding of new incidents.
+    *
+    * Copyright:    ©2019 by E2i, Inc.
+    * Created Date: 2019-04-26
+    * Author:       Brad Robbins (brobbins@e2i.net)
+    *
+    * --------------------------------------------------------------------------------
+    * Revision History:
+    * Author           Date        Description
+    * Brad Robbins	   2019-04-26  Initial version
+    * ================================================================================
+*@
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Add Incident</h2>
+<p class="alert-danger">@TempData["Error"]</p>
+<hr />
+
+
+<form asp-action="Create" autocomplete="off">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="LocalTimeString" />
+
+    <div class="row">
+        @{ await Html.RenderPartialAsync("AddEditIncidentPartialView"); }
+    </div>
+    <div class="form-group">
+        <input id="submitButton" type="submit" value="Create" class="btn btn-default" />
+    </div>
+</form>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{ await Html.RenderPartialAsync("AddEditIncidentScripts"); }
+}
